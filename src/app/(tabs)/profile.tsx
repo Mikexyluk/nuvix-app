@@ -71,10 +71,10 @@ export default function Usuario() {
   // LISTA DE ROTAS DO SUPORTE
   // -----------------------------
   const suporte = [
-    { label: "Central de Denúncias e Violação", route: "/denuncias" },
+    { label: "Central de Denúncias e Violação", route: "/suporte" },
     { label: "Gerenciamento de Conta", route: "/conta" },
-    { label: "Central de Ajuda", route: "/ajuda" },
-    { label: "Política de Privacidade", route: "/privacidade" },
+    { label: "Central de Ajuda", route: "/suporte" },
+    { label: "Política de Privacidade", route: "/politica" },
     { label: "Sair" },
   ];
 
@@ -209,8 +209,11 @@ export default function Usuario() {
 
 
         {/* Seção: Suporte da Conta */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>SUPORTE DA CONTA.</Text>
+       <View style={styles.section}>
+  <Text style={styles.sectionTitle}>
+    SUPORTE DA CONTA<Text style={styles.dot}>.</Text>
+  </Text>
+
           {suporte.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -282,7 +285,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginLeft: 15,
+    marginBottom: 4,
+    textTransform: "uppercase",
+  },
+  sectionTitle2: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 15,
     marginBottom: 10,
+    marginTop: 15,
     textTransform: "uppercase",
   },
   dot: {
@@ -372,13 +384,13 @@ arrowIcon: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#111827",
-    padding: 15,
+    backgroundColor: "#000000c2",
+    padding: 9,
     borderRadius: 8,
-    marginVertical: 5,
+    marginVertical: 2,
   },
   supportText: {
     color: "#fff",
-    fontSize: 15,
+    fontSize: 13,
   },
 });

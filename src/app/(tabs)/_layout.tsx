@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { colors } from "../../styles/colors";
-import { AntDesign as AntiDesigner, Feather } from "@expo/vector-icons";
+import { AntDesign as AntiDesigner, Feather, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
  
 export default function Layout() {
   return (
@@ -24,10 +24,10 @@ export default function Layout() {
                 <AntiDesigner name="home" color={color} size={size} />
             ),
         }}/>
-        <Tabs.Screen name="wishlist" options={{
+        <Tabs.Screen name="catalogo" options={{
             tabBarIcon:({color, size}) => (
                 //ACHAR OS ICONES NO EXPO ICONS
-                <AntiDesigner name="hearto" color={color} size={size} />
+                <FontAwesome6 name="gamepad" size={size} color={color} />
             ),
         }}/>
         <Tabs.Screen name="cart" options={{

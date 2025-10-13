@@ -35,11 +35,12 @@ export default function Login() {
   }, []);
 
   const handleLogin = async () => {
-    if (email === "usuario@usuario.com" && senha === "senha1234") {
+    if (email === "usuario@usuario.com" && senha === "1234") {
       if (lembrar) {
-        await AsyncStorage.setItem("email", email); // salva o email
+        await AsyncStorage.setItem("email", email); // SALVA O EMAIL
+        await AsyncStorage.setItem("senha", senha); //SALVA A SENHA TMB --- TIRAR DEPOIS PELO AMOR DE DEUS
       } else {
-        await AsyncStorage.removeItem("email"); // remove se não quiser lembrar
+        await AsyncStorage.removeItem("email"); //REMOVE O EMAIL DO LEMBRAR
       }
 
       // ação ao logar (vai para home)

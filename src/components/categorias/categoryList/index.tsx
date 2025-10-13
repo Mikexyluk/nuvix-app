@@ -1,38 +1,52 @@
-import { FlatList, View, StyleSheet } from "react-native";
-import CategoryItem from "@/src/components/categorias/categoryItem";
+import { useRouter } from "expo-router";
+import React from "react";
+import { Text, TouchableOpacity, View, StyleSheet, ScrollView } from "react-native";
 
-// Dados simulados das categorias "data.ts ou data.json"
-export const gategories = [
-  { id: "1", name: "Estratégia" },
-  { id: "2", name: "Aventura" },
-  { id: "3", name: "Ação" },
-  { id: "4", name: "Casual" },
-];
-
-export default function CategoryList() {
-  return (
-    <View>
-      <FlatList
-        data={gategories} //Onde os dados são passados como array na props data
-        horizontal //Para deixar a lista horizontal
-        showsHorizontalScrollIndicator={false} //Para definir uma chave unica para cada item
-        keyExtractor={(item) => item.id} //Para renderizar cada item da lista
-        renderItem={({ item }) => <CategoryItem name={item.name} />} //Para renderizar cada item da lista e o nome da categoria como prop para o componente CategoryItem
-      />
-    </View>
-  );
+interface CategoryItemProps {
+  name: string;
 }
 
+const CategoryItem: React.FC<CategoryItemProps> = ({ name }) => {
+  const router = useRouter();
+  return (
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => router.push("/")}>
+        <Text style={styles.categoryText}>{name}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+interface CategoryListProps {
+  categories: string[];
+}
+
+const CategoryList: React.FC<CategoryListProps> = ({ categories }) => {
+  return (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.listContainer}>
+      {categories.map((cat, index) => (
+        <CategoryItem key={index} name={cat} />
+      ))}
+    </ScrollView>
+  );
+};
+
+export default CategoryList;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginBottom: 525,
+  listContainer: {
+    marginVertical: 12,
   },
-  image: {
-    width: 350,
-    height: 150,
-    resizeMode: "cover",
-    borderRadius: 8,
-    borderWidth: 1,
+  itemContainer: {
+    marginRight: 10,
+  },
+  categoryText: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 25,
+    backgroundColor: "#00C8F6",
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 14,
   },
 });

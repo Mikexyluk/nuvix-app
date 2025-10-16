@@ -1,35 +1,60 @@
-import { View, FlatList } from "react-native";
-import CategoryItem from "@/src/components/Categorias/Categoria_Home/categoryItem_home";
-import { styles } from "./style";
+import React, { useEffect, useState } from "react";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-
-//Dados simulados das categorias "data.ts ou data.json"
-const categories = [
-  { id: "1", name: "Novidades Nuvix." },
-  { id: "2", name: "Aventura" },
-  { id: "3", name: "Ação" },
-  { id: "4", name: "RPG" },
-  { id: "5", name: "Terror" },
-  { id: "6", name: "Estratégia" },
-];
+import CategoryItem from "@/src/components/Categorias/Categoria_Home/categoryItem_home";
+import { getCategoriesLocal } from "@/src/data/categories";
+import { styles } from "./style";
 
 export default function CategoryList() {
+  const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        //TA PUXANDO LA DO CATEGORIES.TS
+        const data = await getCategoriesLocal();
+        setCategories(data);
+      } catch (error) {
+        console.error("Erro ao carregar categorias:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadCategories();
+  }, []);
+
+  if (loading) {
+    
+    return (
+      <View
+        style={[
+          styles.container,
+          { alignItems: "center", justifyContent: "center" },
+        ]}
+      >
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AntDesign
         name="cloudo"
         size={24}
-        color="#ffffffff"
+        color="#ffffff"
         style={styles.cloude}
       />
-      <View style={styles.line}></View>
+      <View style={styles.line} />
       <FlatList
         data={categories}
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => `${item}-${index}`}
         contentContainerStyle={styles.flatListContent}
-        renderItem={({ item, index }) => <CategoryItem name={item.name} />}
+        renderItem={({ item }) => <CategoryItem name={item} />}
       />
     </View>
   );

@@ -1,6 +1,6 @@
 import { ImageBackground, ScrollView, View, StyleSheet } from "react-native";
 import React from "react";
-import Promo from "@/src/components/promo/index";
+import Promo from "@/src/components/Pre-Prontos/promo/index";
 import CategoryList from "@/src/components/Categorias/Categoria_Home/categoryList_home";
 import ProductItemList from "@/src/components/produtos/productItemList";
 export default function Index() {

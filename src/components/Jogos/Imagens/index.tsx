@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { GameCard, type Jogo } from "../categorias/categoryCard";
+import { GameCard, type Jogo } from "../../Categorias/Catregoria_Game/categoryCard_game";
 
 const jogos: Jogo[] = [
   {
@@ -36,7 +36,7 @@ export default function GameList({ title, onGamePress }: GameListProps) {
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <GameCard jogo={item} onPress={() => onGamePress(item)} />
+          <GameCard jogo={item} onPress={() => onGamePress && onGamePress(item)} />
         )}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={() => <View style={styles.separator} />}

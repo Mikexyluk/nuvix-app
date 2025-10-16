@@ -15,6 +15,16 @@ export type Platform =
   | "Mobile"
   | string;
 
+  export type AgeRating =
+  | "L"
+  | "10"
+  | "12"
+  | "14"
+  | "16"
+  | "18"
+  | any; // PARA ACEITAR OUTROS TIPOS DE CLASSIFICAÇÃO
+
+
 export interface Game {
   id: string;
   nome: string;
@@ -31,10 +41,12 @@ export interface Game {
   plataforma?: Platform; // Steam, Epic, PSN, Xbox, Switch, PC, Mobile
   anodelancamento?: string; // ANO DE LANÇAMENTO
   categorias?: string[]; // CATEGORIAS
+  classificacao?: AgeRating ; // CLASSIFICAÇÃO DE IDADE
   info?: Feature[]; // INFORMAÇÕES ADICIONAIS, TIPO JOGADORES ETC, EH DA PÁGINA DE ID_JOGO
   disponibilidade?: boolean;
   updatedAt?: string;
 }
+
 
  //DADOS SIMULADOS
 export const seedGames: Game[] = [
@@ -61,6 +73,7 @@ export const seedGames: Game[] = [
     plataforma: "PC",
     anodelancamento: "2022-08-11",
     categorias: ["Construção de Bases","Fofo","Roguelike de Ação"],
+    classificacao: "12",
     info: [
       { icon: "world-o", lib: "Fontisto", text: "Jogo offline habilitado" },
       { icon: "people-sharp", lib: "Ionicons", text: "Multiplayer local" },
@@ -82,6 +95,7 @@ export const seedGames: Game[] = [
     plataforma: "PC",
     anodelancamento: "2023-09-19",
     categorias: ["Ação"],
+    classificacao: "14",
     info: [
       { icon: "game-controller", lib: "Ionicons", text: "Suporte a controle" },
       { icon: "world-o", lib: "Fontisto", text: "Campanha extensa" },

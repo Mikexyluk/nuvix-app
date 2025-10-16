@@ -1,11 +1,9 @@
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image, ScrollView, ImageBackground } from "react-native";
-import Button from "@/src/components/button/Button";
-import GameFeatures from "@/src/components/Jogos/Gameinfo/GameFeature";
-import CategoryList from "@/src/components/categorias/categoryList";
+import Button from "@/src/components/Pre-Prontos/button/Button";
+import CategoryList from "@/src/components/Categorias/Catregoria_Game/categoryList_game";
 import { Game, getGameByIdLocal } from "@/src/data/game";
-import GameCard from "@/src/components/Jogos/cardgame/CardGame";
 import styles from "./style";
 
 
@@ -27,6 +25,7 @@ export default function JogoDetalhes() {
       </View>
     );
   }
+  const GameCard: React.FC<Game> = ({ id }) => {
 
   return (
     <ImageBackground
@@ -34,14 +33,10 @@ export default function JogoDetalhes() {
           style={styles.background}
         >
     <ScrollView style={styles.mainContainer}>
-      <GameCard gameId={id}/>
+      <GameCard id={game.id} nome={game.nome} imagemcapa={game.imagemcapa} />
 
       {/* Categorias */}
       <CategoryList categories={game.categorias || []} />
-
-
-      {/* Recursos / Features */}
-      <GameFeatures gameId={game.id} />
 
       {/* Botão */}
       <View style={styles.buttonContainer}>
@@ -50,6 +45,7 @@ export default function JogoDetalhes() {
     </ScrollView>
     </ImageBackground>
   );
+}
 }
 
 

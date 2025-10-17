@@ -29,7 +29,7 @@ export default function ResgatePosCompra() {
 
   const handleResgatar = () => {
     setChaveResgatada(true);
-    Alert.alert("Chave Resgatada!", `Sua chave: ${compra.chave}`);
+    Alert.alert("Chavea Resgatada!", `Sua chave: ${compra.chave}`);
   };
 
   return (

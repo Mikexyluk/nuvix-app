@@ -35,7 +35,7 @@ export default function ResgatePosCompra() {
   return (
     <ImageBackground
       style={styles.container}
-      source={require("../../../assets/images/fundo.png")}
+      source={require("@/assets/images/wallpaper-base.png")}
     >
       {/* IMAGEM DO JOGO */}
       <View style={styles.containerImage}>

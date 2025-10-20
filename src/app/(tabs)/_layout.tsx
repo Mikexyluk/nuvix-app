@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { colors } from "../../styles/colors";
-import { AntDesign as AntiDesigner, Feather, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign as AntiDesigner, Entypo, Feather, FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Header from "@/src/components/header";
  
 export default function Layout() {
@@ -37,10 +37,10 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="cart"
+        name="novidades"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Feather name="shopping-bag" size={size} color={color} />
+           <MaterialCommunityIcons name="newspaper-variant-outline" size={size} color={color} />
           ),
         }}
       />

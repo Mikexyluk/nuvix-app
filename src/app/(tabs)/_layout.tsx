@@ -1,8 +1,15 @@
 import { Tabs } from "expo-router";
 import { colors } from "../../styles/colors";
-import { AntDesign as AntiDesigner, Entypo, Feather, FontAwesome6, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {
+  AntDesign as AntiDesigner,
+  Entypo,
+  Feather,
+  FontAwesome6,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import Header from "@/src/components/header";
- 
+
 export default function Layout() {
   return (
     <Tabs
@@ -40,7 +47,11 @@ export default function Layout() {
         name="novidades"
         options={{
           tabBarIcon: ({ color, size }) => (
-           <MaterialCommunityIcons name="newspaper-variant-outline" size={size} color={color} />
+            <MaterialCommunityIcons
+              name="newspaper-variant-outline"
+              size={size}
+              color={color}
+            />
           ),
         }}
       />

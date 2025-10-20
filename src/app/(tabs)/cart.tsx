@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { getGamesByCategory } from "@/src/data/categories";
 import { Game } from "@/src/data/game";
 import { useRouter } from "expo-router";
@@ -17,7 +25,10 @@ export default function NovidadesScreen() {
         const novidades = await getGamesByCategory("Novidades Nuvix.");
         // Opcional: ordenar por data de atualização decrescente
         novidades.sort((a, b) => {
-          return new Date(b.updatedAt || "").getTime() - new Date(a.updatedAt || "").getTime();
+          return (
+            new Date(b.updatedAt || "").getTime() -
+            new Date(a.updatedAt || "").getTime()
+          );
         });
         setGames(novidades);
       } catch (error) {

@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "contain",
     justifyContent: "center",
+    backgroundColor: "#000",
   },
 
   // Header do usuário

@@ -36,7 +36,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="catalogo_geral"
+        name="catalogo"
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome6 name="gamepad" size={size} color={color} />

@@ -1,43 +1,114 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ImageStyle,
+  ActivityIndicator,
+} from "react-native";
 
-type AgeRating = "L" | "10" | "12" | "14" | "16" | "18" | string;
+import { classificacoes, AgeRating } from "@/src/data/classificacao";
 
 interface Props {
   classificacao?: AgeRating;
+  //TAMANHO DOS ICONES
+  tamanho?: "pequeno" | "normal";
 }
 
-export default function ClassificacaoEtaria({ classificacao = "L" }: Props) {
-  const cores = {
-    L: "#00A859", // verde
-    10: "#F7C600", // amarelo
-    12: "#F28C00", // laranja
-    14: "#EA5B0C", // laranja escuro
-    16: "#E41C13", // vermelho
-    18: "#000000", // preto
+export default function ClassificacaoEtaria({
+  classificacao = "L",
+  tamanho = "pequeno",
+}: Props) {
+  const ratingKey: AgeRating =
+    classificacao && classificacoes[classificacao] ? classificacao : "L";
+
+  const ratingData = classificacoes[ratingKey] as {
+    icone: string | number;
+    nome: string;
+    texto: string;
   };
 
-  const backgroundColor = cores[classificacao as keyof typeof cores] || "#999";
-  const textoCor = classificacao === "18" ? "#FFF" : "#000";
+  //----| TAMANHO DO ÍCONE |----
+  const iconSize: ImageStyle =
+    tamanho === "pequeno"
+      ? { width: 25, height: 30 }
+      : { width: 40, height: 40 };
+
+  if (!ratingData.icone) {
+    return (
+      <View style={styles.containerTexto}>
+        <Text style={styles.textoDescritivoFallback}>
+          {ratingData.texto} ({ratingKey})
+        </Text>
+      </View>
+    );
+  }
+
+  const isUri = typeof ratingData.icone === "string";
+  const [loading, setLoading] = React.useState(false);
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
-      <Text style={[styles.texto, { color: textoCor }]}>{classificacao}</Text>
+    <View style={styles.containerPrincipal}>
+      {/* ÍCONE (A IMAGEMZINHA) */}
+      <View
+        style={[
+          { justifyContent: "center", alignItems: "center", marginRight: 8 },
+          iconSize,
+        ]}
+      >
+        <Image
+          source={
+            isUri
+              ? { uri: String(ratingData.icone) }
+              : (ratingData.icone as number)
+          }
+          style={[styles.icone, iconSize]}
+          accessibilityLabel={`Classificação ${ratingData.nome}`}
+          // Usamos onLoadStart/onLoadEnd para controlar um indicador de carregamento manualmente
+          onLoadStart={() => isUri && setLoading(true)}
+          onLoadEnd={() => isUri && setLoading(false)}
+        />
+        {isUri && loading && (
+          <ActivityIndicator
+            size="small"
+            color="#FFF"
+            style={{ position: "absolute" }}
+          />
+        )}
+      </View>
+
+      {/* TEXTO DESCRITIVO AO LADO */}
+      <Text style={styles.textoDescritivo}>{ratingData.texto}</Text>
     </View>
   );
 }
 
+// --- Estilos ---
+
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    alignSelf: "flex-start",
-    minWidth: 35,
+  containerPrincipal: {
+    flexDirection: "row",
     alignItems: "center",
+    alignSelf: "flex-start",
+    marginRight: 8,
   },
-  texto: {
+  icone: {
+    resizeMode: "contain",
+  },
+  textoDescritivo: {
+    color: "#FFFFFF",
+    fontSize: 10,
+    fontWeight: "500",
+    flexShrink: 1,
+  },
+
+  containerTexto: {
+    alignSelf: "flex-start",
+    padding: 4,
+  },
+  textoDescritivoFallback: {
+    color: "#AAAAAA",
     fontSize: 14,
-    fontWeight: "bold",
   },
 });

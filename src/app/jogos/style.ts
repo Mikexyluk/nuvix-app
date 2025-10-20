@@ -4,7 +4,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: "#0f0f1a",
-    padding: 16,
   },
   background: {
     flex: 1,
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 4,
   },
-  empresa:{
+  empresa: {
     color: "#ffffffff",
     fontSize: 18,
     marginTop: 4,

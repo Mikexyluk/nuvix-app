@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage"; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
 export default function Login() {
@@ -38,7 +38,6 @@ export default function Login() {
     if (email === "usuario@usuario.com" && senha === "1234") {
       if (lembrar) {
         await AsyncStorage.setItem("email", email); // SALVA O EMAIL
-        await AsyncStorage.setItem("senha", senha); //SALVA A SENHA TMB --- TIRAR DEPOIS PELO AMOR DE DEUS
       } else {
         await AsyncStorage.removeItem("email"); //REMOVE O EMAIL DO LEMBRAR
       }

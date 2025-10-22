@@ -48,6 +48,7 @@ const mockExpansions: Expansion[] = [
 
 import { useLocalSearchParams } from "expo-router";
 import ClassificacaoEtaria from "@/src/components/classify-age";
+import Button from "../../Pre-Prontos/button/Button";
 
 const BANNER_HEIGHT = Dimensions.get("window").height * 0.45;
 const PRIMARY_COLOR = "#45DCFF";
@@ -91,17 +92,16 @@ const ExpansionList: React.FC<{ expansions: Expansion[] }> = ({
     </View>
   );
 };
-// ---------------------------------------------------
 
 export default function GameCard() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [game, setGame] = useState<Game | undefined>(undefined);
-  // NOVO ESTADO: Controla qual aba está ativa (Sobre é a padrão)
+  // ISSO AQUI ABRE A BAGACINHA DA ABA DO EXPANSÃO E SOBRE
   const [activeTab, setActiveTab] = useState<
     typeof TABS.ABOUT | typeof TABS.EXPANSIONS
   >(TABS.ABOUT);
 
-  // MOCK: Assumindo que seu objeto game não tem Expansões, usamos o mock.
+  //MOCKY = SIGNIFICA QUE SÃO DADOS SIMULADOS (SEGUNDO A IA CHECAR DPS E POR AQUITBM)
   const expansions = mockExpansions;
 
   useEffect(() => {
@@ -131,12 +131,12 @@ export default function GameCard() {
     );
   };
 
-  // Componente que renderiza o conteúdo da aba "Sobre"
+  //ABA SOBRE
   const renderAboutContent = () => (
     <>
       <View style={styles.separator} />
 
-      {/* Destaques do Jogo (2 Jogadores, Offline, etc.) */}
+      {/* ---| DESTAQUES |--- */}
       <View style={styles.featuresList}>
         {game.info?.map((feature, index) => (
           <View key={`${feature.text}-${index}`} style={styles.featureItem}>
@@ -146,7 +146,7 @@ export default function GameCard() {
         ))}
       </View>
 
-      {/* IMAGENS DO CARROSSEL */}
+      {/* ---| IMMAGENS |--- */}
       <Text style={styles.sectionHeader}>Galeria</Text>
       <ScrollView horizontal style={styles.galleryScroll}>
         {game.imagemexemplo1 && (
@@ -158,7 +158,7 @@ export default function GameCard() {
           />
         )}
 
-        {/* Imagem 2: Puxa a imagem do Game carregado */}
+        {/* IMAGEM EXEMPLO2 QUE TA PUXANDO LA DO TS */}
         {game.imagemexemplo2 && (
           <Image
             source={{
@@ -168,7 +168,7 @@ export default function GameCard() {
           />
         )}
 
-        {/* Imagem 3: Puxa a imagem do Game carregado */}
+        {/* IMAGEM3 == */}
         {game.imagemexemplo3 && (
           <Image
             source={{
@@ -179,8 +179,7 @@ export default function GameCard() {
         )}
       </ScrollView>
 
-      {/* Descrição */}
-      {/* Mudei o título da seção para "Descrição" para ficar mais alinhado à imagem de exemplo */}
+      {/* DESCRIÇÃO DO JOGO*/}
       {game.descricao && (
         <View style={styles.descriptionContainer}>
           <Text style={styles.sectionHeader}>Descrição</Text>
@@ -190,15 +189,16 @@ export default function GameCard() {
     </>
   );
 
-  // Componente que renderiza o conteúdo da aba "Expansões"
+  // BAGUI QUE VAI RENDERIZAR A ABA DAS EXPANSOES
+  //ARRUMAR AS IMAGENS!!
   const renderExpansionContent = () => (
     <ExpansionList expansions={expansions} />
   );
 
-  // Função que renderiza os botões de Sobra/Expansões/Resgatar Chave
+  // BOTÕES DOS BAGUI QUE MUDA
   const renderNavButtons = () => (
     <View style={styles.navButtonsContainer}>
-      {/* Botão SOBRE */}
+      {/* SOBRE */}
       <TouchableOpacity
         style={[
           styles.navButton,
@@ -217,7 +217,7 @@ export default function GameCard() {
         </Text>
       </TouchableOpacity>
 
-      {/* Botão EXPANSÕES */}
+      {/* EXPANSÕES */}
       <TouchableOpacity
         style={[
           styles.navButton,
@@ -236,7 +236,7 @@ export default function GameCard() {
         </Text>
       </TouchableOpacity>
 
-      {/* Preço - Movemos ele para aqui para ficar alinhado à direita dos botões */}
+      {/* PREÇO */}
       <View style={styles.priceContainerRight}>
         <Text style={styles.priceRight}>{game.preco || "R$0,00"}</Text>
       </View>
@@ -245,14 +245,14 @@ export default function GameCard() {
 
   return (
     <View style={styles.screen}>
-      {/* 1. Imagem de Fundo (Banner Fixo) */}
+      {/* IMAGEM DE FUNDO */}
       <Image
         source={{
           uri: game.imagembanner || game.imagemcapa || game.imagem,
         }}
         style={styles.bannerImage}
       />
-      {/* Botões Voltar/Compartilhar (no topo) */}
+      {/* BOTÃO COMPARTILHAR */}
       <View style={styles.topBar}>
         <Ionicons
           name="arrow-back-circle"
@@ -303,10 +303,9 @@ export default function GameCard() {
               </View>
             </View>
 
-            {/* Botões de Navegação (Sobre/Expansões) e Preço */}
+            {/* BOTÃO DE NAVEGAÇÃO */}
             {renderNavButtons()}
 
-            {/* Lista de Categorias (Gêneros) - Visível no SOBRE e no EXPANSÕES */}
             <View style={styles.sectionMargin}>
               <CategoryList categories={game.categorias ?? []} />
             </View>
@@ -315,6 +314,10 @@ export default function GameCard() {
             {activeTab === TABS.ABOUT
               ? renderAboutContent()
               : renderExpansionContent()}
+          </View>
+          {/* BOTÃO FIXO INFERIOR DE AÇÃO */}
+          <View style={styles.navButtonsContainerresgate}>
+            <Button title="Resgatar Chave" onPress={() => {}} />
           </View>
         </View>
       </ScrollView>
@@ -326,6 +329,7 @@ export default function GameCard() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundImage: "@/src/assets/wallpaper-base.png",
     backgroundColor: BACKGROUND_COLOR,
   },
   loadingContainer: {
@@ -344,6 +348,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: BANNER_HEIGHT,
     resizeMode: "cover",
+  },
+  botao: {
+    marginLeft: "50%",
   },
   topBar: {
     position: "absolute",
@@ -371,9 +378,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   container: {
-    // Conteúdo
+    //NADA AINDA
   },
-  // --- HEADER INFO (Título, Empresa, Classificação) ---
+  // HEADER
   headerInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -404,11 +411,21 @@ const styles = StyleSheet.create({
     color: "#B0B0C0",
     marginLeft: 8,
   },
-  // --- Botões de Navegação (Sobre/Expansões) e Preço ---
+  // BOTÃO DE NAVEGAÇÃO SOBRE/EXPANSÕES
   navButtonsContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
+  },
+  navButtonsContainerresgate: {
+    flexDirection: "row",
+    justifyContent: "center",
+    backgroundColor: BACKGROUND_COLOR,
+    alignItems: "center",
+    position: "absolute",
+    bottom: -50,
+    left: 0,
+    right: 0,
   },
   navButton: {
     paddingHorizontal: 15,
@@ -416,7 +433,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 10,
     borderWidth: 1,
-    borderColor: "transparent", // Transparente por padrão, a ativa tem cor
+    borderColor: "transparent",
   },
   navButtonActive: {
     backgroundColor: PRIMARY_COLOR,
@@ -431,7 +448,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   priceContainerRight: {
-    marginLeft: "auto", // Empurra para a direita
+    marginLeft: "auto",
     paddingVertical: 5,
     paddingHorizontal: 10,
     alignSelf: "center",
@@ -440,8 +457,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: PRIMARY_COLOR,
     fontWeight: "bold",
+    marginLeft: 10,
   },
-  // --- Seções Gerais ---
+  // ABA DE SEÇOES
   sectionMargin: {
     marginVertical: 10,
   },
@@ -457,7 +475,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 10,
   },
-  // --- Destaques/Features (Aba Sobre) ---
+  // ABINHA DE SOBRE
   featuresList: {
     flexDirection: "row",
     flexWrap: "wrap",

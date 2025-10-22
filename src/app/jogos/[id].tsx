@@ -11,11 +11,8 @@ export default function JogoDetalhes() {
       source={require("@/assets/images/wallpaper-base.png")}
       style={styles.background}
     >
-      <ScrollView style={styles.mainContainer}>
+      <ScrollView>
         <GameCard />
-        <View style={styles.buttonContainer}>
-          <Button title="Resgatar Chave" onPress={() => {}} />
-        </View>
       </ScrollView>
     </ImageBackground>
   );

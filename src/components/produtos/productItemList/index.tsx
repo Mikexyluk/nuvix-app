@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  View,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
+import { FlatList, View, Text, ActivityIndicator } from "react-native";
 import ProductItem from "../productItem"; // Caminho corrigido para o ProductItem
 // Ajuste o caminho abaixo conforme a localização real do arquivo 'game.ts'
 import { getGamesLocal, Game } from "../../../data/game"; // Caminho corrigido para os dados
@@ -58,6 +52,8 @@ export default function Home() {
             id={item.id} // Necessário para a interface
             nome={item.nome}
             preco={item.preco}
+            empresa={item.empresa}
+            categorias={item.categorias}
             imagem={item.imagem} // Imagem de catálogo
             imagemcapa={item.imagemcapa} // Necessário para a interface
             // ERRO COMUM 3: Esquecer de usar um Wrapper (como Pressable) se quiser que ProductItem seja clicável.

@@ -1,69 +1,69 @@
-import { FlatList } from "react-native";
-import React from "react";
-import ProductItem from "../productItem";
-import { styles } from "./style";
+import React, { useEffect, useState } from "react";
+import {
+  FlatList,
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
+import ProductItem from "../productItem"; // Caminho corrigido para o ProductItem
+// Ajuste o caminho abaixo conforme a localização real do arquivo 'game.ts'
+import { getGamesLocal, Game } from "../../../data/game"; // Caminho corrigido para os dados
 
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-};
+export default function Home() {
+  const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export const products: Product[] = [
-  {
-    id: "1",
-    name: "Silk Song",
-    price: 60.0,
-    image:
-      "https://p2.trrsf.com/image/fget/cf/1200/1200/middle/images.terra.com/2025/09/01/hksilk-vf9p80c91839.jpg",
-  },
-  {
-    id: "2",
-    name: "Cult of the Lamb",
-    price: 70.0,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbRjoIkvNo7BtH2BwR5blH6WnDlZvWf0bRtQ&s",
-  },
-  {
-    id: "3",
-    name: "Peak",
-    price: 100.0,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_OQaRA_vBnifKTyr-rObNN160l7VWGCymZQ&s",
-  },
-  {
-    id: "1",
-    name: "Silk Song",
-    price: 60.0,
-    image:
-      "https://p2.trrsf.com/image/fget/cf/1200/1200/middle/images.terra.com/2025/09/01/hksilk-vf9p80c91839.jpg",
-  },
-  {
-    id: "2",
-    name: "Cult of the Lamb",
-    price: 70.0,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbRjoIkvNo7BtH2BwR5blH6WnDlZvWf0bRtQ&s",
-  },
-  {
-    id: "3",
-    name: "Peak",
-    price: 100.0,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_OQaRA_vBnifKTyr-rObNN160l7VWGCymZQ&s",
-  },
-];
+  useEffect(() => {
+    async function loadGames() {
+      try {
+        const gameList = await getGamesLocal(); // Puxa os dados simulados
+        setGames(gameList);
+      } catch (error) {
+        console.error("Erro ao carregar jogos:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadGames();
+  }, []);
 
-export default function ProductItemList() {
+  if (loading) {
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#45DCFF" />
+        <Text>Carregando jogos...</Text>
+      </View>
+    );
+  }
+
+  // ERRO COMUM 1: Não há checagem se há jogos.
+  if (games.length === 0) {
+    return (
+      <View>
+        <Text>Nenhum jogo encontrado.</Text>
+      </View>
+    );
+  }
+
   return (
-    <FlatList
-      data={products}
-      showsHorizontalScrollIndicator={false}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <ProductItem image={item.image} name={item.name} price={item.price} />
-      )}
-    />
+    <View>
+      <FlatList
+        data={games}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          // ERRO COMUM 2: Não passar todas as props NECESSÁRIAS
+          // A interface Game exige 'id' e 'imagemcapa'
+          <ProductItem
+            id={item.id} // Necessário para a interface
+            nome={item.nome}
+            preco={item.preco}
+            imagem={item.imagem} // Imagem de catálogo
+            imagemcapa={item.imagemcapa} // Necessário para a interface
+            // ERRO COMUM 3: Esquecer de usar um Wrapper (como Pressable) se quiser que ProductItem seja clicável.
+          />
+        )}
+      />
+    </View>
   );
 }

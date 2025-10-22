@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     textAlign: "justify",
   },
+  //Card de expansão style
 
   cartaoExpansao: {
     backgroundColor: "#1b1a1ace",

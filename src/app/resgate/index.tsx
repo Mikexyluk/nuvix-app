@@ -29,13 +29,13 @@ export default function ResgatePosCompra() {
 
   const handleResgatar = () => {
     setChaveResgatada(true);
-    Alert.alert("Chave Resgatada!", `Sua chave: ${compra.chave}`);
+    Alert.alert("Chavea Resgatada!", `Sua chave: ${compra.chave}`);
   };
 
   return (
     <ImageBackground
       style={styles.container}
-      source={require("../../../assets/images/fundo.png")}
+      source={require("../../../assets/images/wallpaper-base.png")}
     >
       {/* IMAGEM DO JOGO */}
       <View style={styles.containerImage}>

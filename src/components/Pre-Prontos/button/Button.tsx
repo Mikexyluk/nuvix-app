@@ -1,28 +1,51 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { View, Text, TouchableOpacity, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  GestureResponderEvent,
+} from "react-native";
 
-const Button = ({ title = "Resgatar Chave", onPress }: { title?: string; onPress?: () => void }) => {
+const Button = ({
+  title = "Resgatar Chave",
+  onPress,
+}: {
+  title?: string;
+  onPress?: () => void;
+}) => {
   const handlePress = () => {
     if (onPress) {
       onPress();
     } else {
       // Alerta padrão se nenhuma função for passada
-      Alert.alert("Resgatar Chave", "Chave resgatada com sucesso!", [{ text: "OK" }]);
+      Alert.alert("Resgatar Chave", "Chave resgatada com sucesso!", [
+        { text: "OK" },
+      ]);
     }
   };
+
+  function handleLogin(event: GestureResponderEvent): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <View style={styles.container}>
       {/* Divisor */}
-      <View style={styles.divider} />
-
-      {/* Botão */}
       <TouchableOpacity
-        style={styles.button}
-        onPress={handlePress}
-        activeOpacity={0.8}
+        onPress={handleLogin}
+        style={{ borderRadius: 40, overflow: "hidden", marginTop: 10 }}
       >
-        <Text style={styles.buttonText}>{title}</Text>
+        <LinearGradient
+          colors={["#019EC2", "#45DCFF"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Iniciar Sessão</Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -32,32 +55,20 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
-    alignItems: "center",
-  },
-  divider: {
-    height: 1,
-    backgroundColor: "#181836",
-    width: "90%",
-    marginBottom: 20,
+    //NADA AINDA
   },
   button: {
-    backgroundColor: "#00BFFF",
-    paddingVertical: 14,
-    paddingHorizontal: 40,
-    borderRadius: 25,
+    flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#00BFFF",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 6,
-    elevation: 6,
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 40,
+    marginTop: 4,
   },
   buttonText: {
-    fontSize: 18,
     color: "#fff",
+    fontSize: 18,
     fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: 1,
   },
 });

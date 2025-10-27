@@ -1,122 +1,215 @@
-import { Text, View, Image, StyleSheet } from "react-native";
-import React from "react";
+import { Game } from "@/src/data/game";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons"; // Importando ícones para o Rating
 
-type ProductItemProps = {
-  image: string;
-  name: string;
-  price: number;
-  onPress?: () => void;
-};
+// Componente para a Tag (Ação, Estratégia, etc.)
+const TagItem = ({ text }: { text: string }) => (
+  <View style={styles.tagContainer}>
+    <Text style={styles.tagText}>{text}</Text>
+  </View>
+);
 
 export default function ProductItem({
-  image,
-  name,
-  price,
-  onPress,
-}: ProductItemProps) {
+  imagem,
+  nome,
+  preco,
+  empresa,
+  id,
+  imagemcapa,
+  categorias, // Agora usado para renderização
+  avaliacao, // Adicionado para um toque final
+}: Game) {
+  const [imageError, setImageError] = useState(false);
+  const router = useRouter();
+
+  const imageUrl = imagem || imagemcapa;
+
+  const handlePress = () => {
+    router.push(`/jogos/${id}`);
+  };
+
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
-      <View>
-        <View style={styles.content}>
-          <Text style={styles.name}>Lies of P</Text>
-          <Text style={styles.price}>RS249.90</Text>
-
-          <View style={styles.ratingContainer}>
-            <Text style={styles.ratingLabel}>NETDWIZ</Text>
-            <View style={styles.rating}>
-              <Text style={styles.ratingText}>4.8</Text>
-            </View>
+    <TouchableOpacity onPress={handlePress}>
+      {" "}
+      <View style={styles.container}>
+        {/* 1. IMAGEM */}{" "}
+        {!imageError && imageUrl ? (
+          <Image
+            source={{ uri: imageUrl }}
+            style={styles.image}
+            resizeMode="cover"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <View style={[styles.image, styles.imagePlaceholder]}>
+            {" "}
+            <Text style={styles.placeholderText}>
+              Imagem não disponível
+            </Text>{" "}
           </View>
-
-          <View style={styles.tagsContainer}>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Gentelite</Text>
+        )}
+        {/* 2. INFORMAÇÕES (Layout Vertical) */}{" "}
+        <View style={styles.infoWrapper}>
+          {/* BLOCO SUPERIOR: Nome, Empresa, Rating */}{" "}
+          <View>
+            <View>
+              {" "}
+              {/* Nome e Empresa (Empilhados) */}{" "}
+              <Text style={styles.nomeJogo} numberOfLines={2}>
+                {nome}{" "}
+              </Text>{" "}
+              <Text style={styles.desenvolvedorJogo}>
+                {empresa || "Desenvolvedor Desconhecido"}{" "}
+              </Text>
             </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>AFAO</Text>
-            </View>
+            {/* Avaliação (Rating) */}
+            {avaliacao && (
+              <View style={styles.ratingContainer}>
+                <FontAwesome5 name="star" size={12} color="#FFD700" />
+                <Text style={styles.ratingText}>{avaliacao}</Text>
+              </View>
+            )}{" "}
           </View>
-
-          <Text style={styles.footer}>Tartoisia Sombran</Text>
-        </View>
-      </View>
-    </View>
+          {/* BLOCO INFERIOR: Categorias e Preço */}{" "}
+          <View style={styles.footerGroup}>
+            {/* Categorias (Tags) */}
+            <View style={styles.tagsContainer}>
+              {categorias &&
+                categorias
+                  .slice(0, 2)
+                  .map((cat, index) => <TagItem key={index} text={cat} />)}
+            </View>
+            {/* Preço */}{" "}
+            <Text style={styles.precoJogo}>{preco || "Desconhecido"}</Text>{" "}
+          </View>{" "}
+        </View>{" "}
+      </View>{" "}
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    width: 350, // Mantive 350px para ser o mesmo tamanho do seu código, mas '100%' seria mais responsivo
     padding: 10,
-    backgroundColor:"#000000ff",
-    borderRadius: 15,
-    margin: 8,
+    marginVertical: 8,
+    backgroundColor: "#000000ff",
+    borderRadius: 12,
+    overflow: "hidden", // Sombra
+
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
+
+  // ------------------------------------ // 2. ESTILOS DA IMAGEM // ------------------------------------
+
   image: {
-    width: 64,
-    height: 64,
-    marginRight: 10,
+    width: 80,
+    height: 80,
+    resizeMode: "cover",
     borderRadius: 8,
+    marginRight: 15,
   },
-  content: {
-    padding: 5,
+  imagePlaceholder: {
+    backgroundColor: "#374151",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  name: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#ffffff",
-    fontFamily: "Roboto",
+  placeholderText: {
+    color: "#9ca3af",
+    fontSize: 12,
+    textAlign: "center",
   },
-  price: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#4ecdc4",
-    marginBottom: 8,
-    fontFamily: "Roboto",
+
+  // =========================================== // 3. GRUPOS DE TEXTO E ORGANIZAÇÃO VERTICAL // ===========================================
+
+  infoWrapper: {
+    flex: 1,
+    flexDirection: "column", // <-- Mudei para 'column' para empilhar Nome/Empresa e Preço
+    justifyContent: "space-between", // Empurra o Preço para baixo
+    height: 80, // Mantém a altura da imagem
   },
+
+  textGroup: {
+    // Não precisa de estilos, apenas agrupa o Nome e a Empresa
+    marginBottom: 4,
+  },
+  categorias: {
+    flex: 1,
+    flexDirection: "column", // <-- Mudei para 'column' para empilhar Nome/Empresa e Preço
+    justifyContent: "space-between", // Empurra o Preço para baixo
+    height: 80, // Mantém a altura da imagem
+  },
+
+  nomeJogo: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#ffffff", // Removido flex: 1 e marginRight: 12 para dar espaço ao desenvolvedor abaixo
+    marginBottom: 2,
+  },
+
+  desenvolvedorJogo: {
+    fontSize: 14,
+    color: "#a0a0a0", // Cinza mais claro para o texto da empresa
+    fontStyle: "italic",
+  },
+
+  precoJogo: {
+    fontSize: 18,
+    fontWeight: "bold", // Adicionei negrito para destaque
+    color: "#45DCFF",
+    alignSelf: "flex-end", // Alinha o preço à direita, dentro do seu espaço
+  },
+  // ===========================================
+  // 4. RATING
+  // ===========================================
   ratingContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
-  },
-  ratingLabel: {
-    fontSize: 10,
-    color: "#8a8a8a",
-    marginRight: 12,
-    fontFamily: "Roboto",
-  },
-  rating: {
-    backgroundColor: "#ff9e1b",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
+    backgroundColor: "#019EC2",
+    borderRadius: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
   },
   ratingText: {
-    color: "#ffffff",
+    marginLeft: 4,
+    color: "#FFD700",
     fontWeight: "bold",
-    fontSize: 10,
-    fontFamily: "Roboto",
+    fontSize: 12,
   },
+
+  // ===========================================
+  // 5. FOOTER (PREÇO E TAGS)
+  // ===========================================
+  footerGroup: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    marginTop: "auto", // Garante que vá para o final do infoWrapper
+  },
+
+  // Tags (Categorias)
   tagsContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
   },
-  tag: {
-    backgroundColor: "#4a4a6e",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    marginRight: 8,
+  tagContainer: {
+    backgroundColor: "#019EC2",
+    borderRadius: 10,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    marginRight: 6,
+    marginBottom: 4,
   },
   tagText: {
     color: "#ffffff",
-    fontSize: 12,
-    fontFamily: "Roboto",
-  },
-  footer: {
-    fontSize: 14,
-    color: "#8a8a8a",
-    fontStyle: "italic",
-    fontFamily: "Roboto",
+    fontSize: 11,
+    fontWeight: "500",
   },
 });

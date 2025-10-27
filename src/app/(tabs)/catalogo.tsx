@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Game, getGamesLocal } from "@/src/data/game"; // importa o arquivo unificado
-import Header from "@/src/components/header";
 
 export default function CatalogoJogos() {
   const router = useRouter();
@@ -33,18 +32,18 @@ export default function CatalogoJogos() {
 
   return (
     <>
-    <View style={styles.container}>
-      <FlatList
-        data={jogos}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.linha}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 90 }}
+      <View style={styles.container}>
+        <FlatList
+          data={jogos}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          columnWrapperStyle={styles.linha}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 90 }}
         />
-    </View>
-        </>
+      </View>
+    </>
   );
 }
 

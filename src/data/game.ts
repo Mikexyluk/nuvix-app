@@ -94,7 +94,7 @@ export const seedGames: Game[] = [
         empresa: "Devolver Digital",
         preco: "R$ 23,50",
         imagem:
-          "https://cdn.akamai.steamstatic.com/steam/apps/2168920/capsule_184x69.jpg",
+          "https://projectn.com.br/wp-content/uploads/2024/08/image-31.png",
       },
       {
         id: "exp3",
@@ -102,7 +102,7 @@ export const seedGames: Game[] = [
         empresa: "Devolver Digital",
         preco: "R$ 11,99",
         imagem:
-          "https://cdn.akamai.steamstatic.com/steam/apps/2065830/capsule_184x69.jpg",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFKy_poZwE-kGzw-GoNjKJKine9_J0Qz89MA&s",
       },
     ],
     // ---------------------------------------------

@@ -9,62 +9,62 @@ import {
   GestureResponderEvent,
 } from "react-native";
 
-const Button = ({
-  title = "Resgatar Chave",
-  onPress,
-}: {
+// 1. Definição da Interface (Props) para o componente
+interface ButtonProps {
   title?: string;
   onPress?: () => void;
+}
+
+const PRIMARY_COLOR = "#45DCFF";
+const BACKGROUND_COLOR = "#1A1A2E";
+
+const Button: React.FC<ButtonProps> = ({
+  title = "Resgatar Chave",
+  onPress,
 }) => {
   const handlePress = () => {
     if (onPress) {
       onPress();
     } else {
-      // Alerta padrão se nenhuma função for passada
-      Alert.alert("Resgatar Chave", "Chave resgatada com sucesso!", [
-        { text: "OK" },
-      ]);
+      Alert.alert(title, "Ação padrão executada!", [{ text: "OK" }]);
     }
   };
 
-  function handleLogin(event: GestureResponderEvent): void {
-    throw new Error("Function not implemented.");
-  }
-
   return (
-    <View style={styles.container}>
-      {/* Divisor */}
-      <TouchableOpacity
-        onPress={handleLogin}
-        style={{ borderRadius: 40, overflow: "hidden", marginTop: 10 }}
+    <TouchableOpacity
+      style={styles.container}
+      onPress={handlePress}
+      activeOpacity={0.7}
+    >
+      <LinearGradient
+        colors={[PRIMARY_COLOR, "#00AABB"]}
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 1, y: 0.5 }}
+        style={styles.button}
       >
-        <LinearGradient
-          colors={["#019EC2", "#45DCFF"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Iniciar Sessão</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
+        <Text style={styles.buttonText}>{title}</Text>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 
 export default Button;
 
+// --- ESTILOS ---
 const styles = StyleSheet.create({
   container: {
-    //NADA AINDA
+    width: "60%",
+    marginVertical: 10,
+    borderRadius: 40,
+    overflow: "hidden",
   },
   button: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
+    paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 40,
-    marginTop: 4,
   },
   buttonText: {
     color: "#fff",

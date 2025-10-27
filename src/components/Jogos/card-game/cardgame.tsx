@@ -7,16 +7,16 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Share,
 } from "react-native";
-///IMPORTANDO OS DADOS DO JOGO
 import { Feature, Game, getGameByIdLocal, Expansion } from "@/src/data/game";
 import CategoryList from "../../Categorias/Catregoria_Game/categoryList_game";
 import { Fontisto, Ionicons } from "@expo/vector-icons";
-
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, router } from "expo-router";
 import ClassificacaoEtaria from "@/src/components/classify-age";
 import Button from "../../Pre-Prontos/button/Button";
 
+//CONST DE CORES E DO BOTÃO QUE MUDA DE ABA
 const BANNER_HEIGHT = Dimensions.get("window").height * 0.45;
 const PRIMARY_COLOR = "#45DCFF";
 const BACKGROUND_COLOR = "#1A1A2E";
@@ -50,6 +50,9 @@ const ExpansionList: React.FC<{ expansions: Expansion[] }> = ({
     );
   }
 
+  //INICIO RETURN
+
+  //EXPANSÃOES
   return (
     <View>
       <Text style={styles.sectionHeader}>Expansões</Text>
@@ -68,8 +71,6 @@ export default function GameCard() {
     typeof TABS.ABOUT | typeof TABS.EXPANSIONS
   >(TABS.ABOUT);
 
-  // A VARIÁVEL DE MOCK FOI REMOVIDA AQUI!
-
   useEffect(() => {
     if (id) getGameByIdLocal(id).then((g) => setGame(g));
   }, [id]);
@@ -85,6 +86,39 @@ export default function GameCard() {
       </View>
     );
   }
+
+  //FUNÇOES DE ACAO, EM CIMA DA PAGINA LA O VOLTAR E COMPARTILHAR
+
+  // FUNÇÃO VOLTAR
+  const handleGoBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      // Fallback para a tela inicial se não houver histórico
+      router.replace("/");
+    }
+  };
+
+  // FUNÇÃO COMPARTILHAR
+  const handleShare = async () => {
+    try {
+      const imageUrl = game.imagemcapa || game.imagem;
+      const gameLink = `https://seusite.com/jogo/${game?.id}`; // Use a URL real do seu app/site
+      const message = `Dá uma olhada no jogo ${
+        game?.nome || "esse jogo incrível"
+      }!`;
+
+      await Share.share({
+        message: message,
+        url: gameLink,
+        title: `Compartilhar: ${game?.nome || "Jogo"}`,
+        // Note: A maioria das plataformas não suporta compartilhamento direto de imagens via URL
+      });
+    } catch (error) {
+      console.error("Erro ao compartilhar:", error);
+      alert("Erro ao tentar compartilhar o conteúdo.");
+    }
+  };
 
   const renderIcon = (feature: Feature) => {
     const IconComponent = feature.lib === "Fontisto" ? Fontisto : Ionicons;
@@ -218,26 +252,27 @@ export default function GameCard() {
         }}
         style={styles.bannerImage}
       />
-      {/* BOTÃO COMPARTILHAR */}
+      {/* BOTÕES DE TOPO: VOLTAR E COMPARTILHAR */}
       <View style={styles.topBar}>
-        <Ionicons
-          name="arrow-back-circle"
-          size={36}
-          color="#fff"
-          style={styles.iconShadow}
-          onPress={() => {
-            /* Handle Back */
-          }}
-        />
-        <Ionicons
-          name="share-social"
-          size={30}
-          color="#fff"
-          style={styles.iconShadow}
-          onPress={() => {
-            /* Handle Share */
-          }}
-        />
+        {/* BOTÃO VOLTAR */}
+        <TouchableOpacity onPress={handleGoBack}>
+          <Ionicons
+            name="arrow-back-circle"
+            size={36}
+            color="#fff"
+            style={styles.iconShadow}
+          />
+        </TouchableOpacity>
+
+        {/* BOTÃO COMPARTILHAR */}
+        <TouchableOpacity onPress={handleShare}>
+          <Ionicons
+            name="share-social"
+            size={30}
+            color="#fff"
+            style={styles.iconShadow}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* 2. Conteúdo ROLÁVEL */}
@@ -295,8 +330,7 @@ export default function GameCard() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundImage: "@/src/assets/wallpaper-base.png",
-    backgroundColor: BACKGROUND_COLOR,
+    color: "#1A1A2E",
   },
   loadingContainer: {
     flex: 1,
@@ -389,7 +423,7 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_COLOR,
     alignItems: "center",
     position: "absolute",
-    bottom: -50,
+    bottom: -70,
     left: 0,
     right: 0,
   },

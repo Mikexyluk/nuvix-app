@@ -6,45 +6,12 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  TouchableOpacity, // Importante para os botões de aba
+  TouchableOpacity,
 } from "react-native";
-import { Feature, Game, getGameByIdLocal } from "@/src/data/game";
+///IMPORTANDO OS DADOS DO JOGO
+import { Feature, Game, getGameByIdLocal, Expansion } from "@/src/data/game";
 import CategoryList from "../../Categorias/Catregoria_Game/categoryList_game";
 import { Fontisto, Ionicons } from "@expo/vector-icons";
-
-// --- MOCK DE DADOS DE EXPANSÃO (APENAS PARA DEMONSTRAÇÃO) ---
-interface Expansion {
-  id: string;
-  nome: string;
-  empresa: string;
-  preco: string;
-  imagem: string;
-}
-
-const mockExpansions: Expansion[] = [
-  {
-    id: "1",
-    nome: "Cult of the Lamb: Sinful Pack",
-    empresa: "Devolver Digital",
-    preco: "R$ 16,99",
-    imagem: "https://via.placeholder.com/150/0000FF/808080?Text=SinfulPack",
-  },
-  {
-    id: "2",
-    nome: "Cult of the Lamb: Pilgrim Pack",
-    empresa: "Devolver Digital",
-    preco: "R$ 23,50",
-    imagem: "https://via.placeholder.com/150/FF0000/FFFFFF?Text=PilgrimPack",
-  },
-  {
-    id: "3",
-    nome: "Cult of the Lamb: Cultist Pack",
-    empresa: "Devolver Digital",
-    preco: "R$ 11,99",
-    imagem: "https://via.placeholder.com/150/00FF00/000000?Text=CultistPack",
-  },
-];
-// -----------------------------------------------------------
 
 import { useLocalSearchParams } from "expo-router";
 import ClassificacaoEtaria from "@/src/components/classify-age";
@@ -58,7 +25,7 @@ const TABS = {
   EXPANSIONS: "Expansões",
 } as const;
 
-// --- NOVO COMPONENTE: ITEM DA LISTA DE EXPANSÕES ---
+// --- COMPONENTE: ITEM DA LISTA DE EXPANSÕES ---
 const ExpansionItem: React.FC<{ expansion: Expansion }> = ({ expansion }) => (
   <View style={expansionStyles.itemContainer}>
     <Image source={{ uri: expansion.imagem }} style={expansionStyles.image} />
@@ -96,13 +63,12 @@ const ExpansionList: React.FC<{ expansions: Expansion[] }> = ({
 export default function GameCard() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [game, setGame] = useState<Game | undefined>(undefined);
-  // ISSO AQUI ABRE A BAGACINHA DA ABA DO EXPANSÃO E SOBRE
+
   const [activeTab, setActiveTab] = useState<
     typeof TABS.ABOUT | typeof TABS.EXPANSIONS
   >(TABS.ABOUT);
 
-  //MOCKY = SIGNIFICA QUE SÃO DADOS SIMULADOS (SEGUNDO A IA CHECAR DPS E POR AQUITBM)
-  const expansions = mockExpansions;
+  // A VARIÁVEL DE MOCK FOI REMOVIDA AQUI!
 
   useEffect(() => {
     if (id) getGameByIdLocal(id).then((g) => setGame(g));
@@ -190,9 +156,9 @@ export default function GameCard() {
   );
 
   // BAGUI QUE VAI RENDERIZAR A ABA DAS EXPANSOES
-  //ARRUMAR AS IMAGENS!!
+  // AGORA PUXA AS EXPANSÕES DIRETAMENTE DO OBJETO 'game'
   const renderExpansionContent = () => (
-    <ExpansionList expansions={expansions} />
+    <ExpansionList expansions={game.expansoes || []} />
   );
 
   // BOTÕES DOS BAGUI QUE MUDA
